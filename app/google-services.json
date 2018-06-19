@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "392408993274",
+    "firebase_url": "https://fir-chat-14cba.firebaseio.com",
+    "project_id": "fir-chat-14cba",
+    "storage_bucket": "fir-chat-14cba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392408993274:android:d19b5be5bd59f061",
+        "android_client_info": {
+          "package_name": "manoj_kumar12.com.firebase_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392408993274-r7hnhk58uirjb4qtnf4jccj6s0gggfhr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "manoj_kumar12.com.firebase_chat",
+            "certificate_hash": "3eae957a2f050dce90d9ff1ccfe357c315710045"
+          }
+        },
+        {
+          "client_id": "392408993274-60201plnk0ed3e39u3u0s9pt5m49b8ke.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "392408993274-60201plnk0ed3e39u3u0s9pt5m49b8ke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2uVIOAnfmfJHdTGgRRfOzHfB237YOugs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392408993274-60201plnk0ed3e39u3u0s9pt5m49b8ke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
