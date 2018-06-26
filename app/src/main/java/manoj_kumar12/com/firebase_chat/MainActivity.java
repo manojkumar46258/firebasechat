@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
+                Map<String, Object> value = (Map<String, Object>) dataSnapshot.getValue();
                 Log.d(TAG, "Value is: " + value);
             }
 

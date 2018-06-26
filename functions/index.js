@@ -1,62 +1,51 @@
+'use strict';
+
 const functions = require('firebase-functions');
-const admin = require('firebase-admin');
 
-//var serviceAccount = require("G:\\firebase_chat\\fir-chat-14cba-firebase-adminsdk-bx78d-025c40ca51.json");
+// // Create and Deploy Your First Cloud Functions
+// // https://firebase.google.com/docs/functions/write-firebase-functions
+//
+exports.helloWorld = functions.https.onRequest((request, response) => {
+  response.send("Hello from Firebase!");
+  //response.firebase.database.ref(/messages/ID).onWrite()
+ });
 
-// Initialize the app with a service account, granting admin privileges
+const request = require('request-promise');
 
-admin.initializeApp();
+// This is the URL that we will callback and send the content of the updated data node.
+// As an example we're using a Request Bin from http://requestb.in
+// TODO: Make sure you create your own Request Bin and change this URL to try this sample.
 
-// As an admin, the app has access to read and write all data, regardless of Security Rules
-var db = admin.database();
-var ref = db.ref("/messages");
-ref.once("value", function(snapshot) {
-  console.log(snapshot.val());
-});
-/*
-exports.dbCreate = functions.database.ref('/messages').onCreate((snap, context) => {
-  const createdData = snap.val(); // data that was created
-});
-*/
-exports.pushNotification = functions.database.ref('/messages/{pushId}').onWrite( event => {
+const WEBHOOK_URL = 'https://35138534.ngrok.io/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ';
 
-    console.log('Push notification event triggered');
-
-    //  Grab the current value of what was written to the Realtime Database.
-    var valueObject = event.data.val();
-
-    if(valueObject.photoUrl != null) {
-      valueObject.photoUrl= "Sent you a photo!";
+// Reads the content of the node that triggered the function and sends it to the registered Webhook
+// URL.
+exports.webhook = functions.database.ref('/messages/{ID}/').onCreate((snap) => {
+  return request({
+    uri: WEBHOOK_URL,
+    method: 'POST',
+    json: true,
+    body: snap.val,
+    resolveWithFullResponse: true,
+  }).then((response) => {
+    if (response.statusCode >= 400) {
+      throw new Error(`HTTP Error: ${response.statusCode}`);
     }
-
-  // Create a notification
-    const payload = {
-        notification: {
-            title:valueObject.name,
-            body: valueObject.text || valueObject.photoUrl,
-            sound: "default"
-        },
-    };
-
-  //Create an options object that contains the time to live for the notification and the priority
-    const options = {
-        priority: "high",
-        timeToLive: 60 * 60 * 24
-    };
-
-
-    return admin.messaging().sendToTopic("pushNotifications", payload, options);
+    console.log('SUCCESS! Posted', snap.ref);
+    return null;
+  });
 });
 
-exports.makeUppercase = functions.database.ref('/messages/-K2ib5JHRbbL0NrztUfO/text/')
+// Listens for new messages added to /messages/:pushId/original and creates an
+// uppercase version of the message to /messages/:pushId/uppercase
+exports.makeUppercase = functions.database.ref('/messages/{pushId}/')
     .onCreate((snapshot, context) => {
       // Grab the current value of what was written to the Realtime Database.
       const original = snapshot.val();
-      console.log('Uppercasing', context.params.pushId, original);
-      const uppercase = original.toUpperCase();
+      console.log('Uppercasing', context.params.pushId, (original.text));
+      const uppercase = original.text.toUpperCase();
       // You must return a Promise when performing asynchronous tasks inside a Functions such as
       // writing to the Firebase Realtime Database.
       // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
-      return snapshot.ref.parent.child('uppercase').set(uppercase);
+      return snapshot.ref.child('uppercase').set(uppercase);
     });
-
