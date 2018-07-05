@@ -7,15 +7,18 @@ public class FriendlyMessage {
     private String name;
     private String photoUrl;
     private String imageUrl;
+    //private String dateAndTime;
 
     public FriendlyMessage() {
     }
 
-    public FriendlyMessage(String text, String name, String photoUrl, String imageUrl) {
+    public FriendlyMessage(String text, String name, String photoUrl, String imageUrl ) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
         this.imageUrl = imageUrl;
+        //this.dateAndTime = dateAndTime;
+
     }
 
     public String getId() {
@@ -57,4 +60,15 @@ public class FriendlyMessage {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+//    public void setDateAndTime(String dateAndTime) {
+//        this.dateAndTime = dateAndTime;
+//    }
+//
+//    public String getDateAndTime() {
+//        return dateAndTime;
+//    }
+
+
+
 }

@@ -11,6 +11,8 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -21,6 +23,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         String notificationTitle = null, notificationBody = null;
 
+        String message = remoteMessage.getData().get("message");
+        //JsonElement payload = new JsonParser().parse(remoteMessage.getData().;
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());

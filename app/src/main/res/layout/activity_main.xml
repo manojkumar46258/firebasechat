@@ -2,7 +2,6 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -12,33 +11,19 @@
     tools:context="manoj_kumar12.com.firebase_chat.MainActivity">
 
 
-    <!--
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-6781948562352571~3190795460">
-    </com.google.android.gms.ads.AdView>
--->
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/messageRecyclerView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@+id/linearLayout"/>
-<!--
-        android:layout_below="@+id/adView"
 
--->
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/linearLayout">
 
@@ -54,7 +39,7 @@
             android:id="@+id/messageEditText"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:inputType="text" />
+             />
 
         <Button
             android:layout_width="wrap_content"
@@ -63,6 +48,7 @@
             android:enabled="false"
             android:id="@+id/sendButton"
             android:layout_gravity="bottom"/>
+
 
     </LinearLayout>
 

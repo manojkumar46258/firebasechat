@@ -67,6 +67,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -124,6 +126,11 @@ public class MainActivity extends AppCompatActivity implements
     private FragmentPagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
 
+    Date date = new Date();
+    SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM dd hh:mm a");
+    String dateAndTime = formatter.format(date);
+    //Message message = new Message(mMessageEditText.getText().toString(), mUserName, null, dateAndTime);
+    //messagesDatabaseReference.push().setValue(message);
 
     private String mUsername;
     private String mPhotoUrl;
@@ -141,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements
     private AdView mAdView;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
+    private FirebaseDatabase myDatabase;
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -157,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this, "ca-app-pub-6781948562352571~3190795460");
+        //MobileAds.initialize(this, "ca-app-pub-6781948562352571~3190795460");
 
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mUsername = ANONYMOUS;
@@ -187,7 +195,10 @@ public class MainActivity extends AppCompatActivity implements
         mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setStackFromEnd(true);
 
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        FirebaseDatabase database= FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
+        mFirebaseDatabaseReference = database.getReference();
+
         mFirebaseDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -379,11 +390,12 @@ public class MainActivity extends AppCompatActivity implements
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername,
-                        mPhotoUrl, null);
-                mFirebaseDatabaseReference.child(MESSAGES_CHILD).push().setValue(friendlyMessage);
+                FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().toString(), mUsername, mPhotoUrl, null);
+                mFirebaseDatabaseReference.child(MESSAGES_CHILD).child(mUsername).push().setValue(friendlyMessage);
                 mMessageEditText.setText("");
                 mFirebaseAnalytics.logEvent(MESSAGE_SENT_EVENT, null);
+                //mFirebaseDatabaseReference.child(USER_SERVICE).push().setValue(mUsername);
+                writeNewUser(mUsername);
             }
         });
         /*
@@ -394,6 +406,11 @@ public class MainActivity extends AppCompatActivity implements
         */
     }
 
+    private void writeNewUser( String name) {
+        //Users user = new Users(name);
+        String userEmail = mFirebaseUser.getEmail();
+        mFirebaseDatabaseReference.child(USER_SERVICE).child(name).setValue(userEmail);
+    }
     private Action getMessageViewAction(FriendlyMessage friendlyMessage) {
         return new Action.Builder(Action.Builder.VIEW_ACTION)
                 .setObject(friendlyMessage.getName(), MESSAGE_URL.concat(friendlyMessage.getId()))
@@ -449,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
